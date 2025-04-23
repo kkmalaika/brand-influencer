@@ -1,0 +1,48 @@
+{% extends 'core/base.html' %}
+{% load static humanize %}
+
+{% block title %}{{ influencer.handle }} | Collabry{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+  <div class="text-center mb-4">
+      <!-- Avatar / logo (optional) -->
+      {# supply a default icon if you don’t have avatars yet #}
+      <img src="{% static 'images/icon_profile.png' %}"
+           alt="{{ influencer.handle }}"
+           style="width: 120px;">
+
+      <h2 class="brand-color mt-3">{{ influencer.handle }}</h2>
+      <p class="text-muted">{{ influencer.platform|title }} influencer</p>
+  </div>
+
+  <div class="row justify-content-center">
+      <div class="col-lg-8">
+
+          <table class="table table-borderless">
+              <tr>
+                  <th scope="row">Niche / Industry</th>
+                  <td>{{ influencer.niche }}</td>
+              </tr>
+              <tr>
+                  <th scope="row">Followers</th>
+                  <td>{{ influencer.followers|intcomma }}</td>
+              </tr>
+              <tr>
+                  <th scope="row">Bio</th>
+                  <td>{{ influencer.bio|linebreaks }}</td>
+              </tr>
+          </table>
+
+          <div class="mt-4 text-center">
+              <a href="{% url 'edit-influencer-profile' %}"
+                 class="btn brand-button-copper">
+                 ✏️ Edit My Profile
+              </a>
+          </div>
+      </div>
+  </div>
+
+</div>
+{% endblock %}

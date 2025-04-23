@@ -1,0 +1,135 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Collabry Home{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+       <!-- 🌟 Welcome Text + Logo Aligned -->
+    <div class="d-flex justify-content-center align-items-center gap-4 mb-5 flex-wrap welcome-background">
+        <h1 class="m-0.5 text-center d-flex align-items-center" style="font-size: 4rem;">
+            <span style="color: #cc7000;">•&nbsp;</span>
+            <span style="color: #cc7000;">Welcome to &nbsp;</span>
+            <span style="color: #007B8A;"> Collabry </span>
+            <span style="color: #cc7000;">&nbsp;•</span>
+            <img src="{% static 'images/collabry_logo.png' %}" alt="Collabry Logo"
+                 class="logo-float ms-3" style="height: 100px; width: auto;">
+        </h1>
+    </div>
+
+    <!-- 📝 Brand Welcome Message -->
+    <div class="text-center mb-5 px-4">
+        <h4 class="brand-color mb-3">We turn partnerships into success </h4>
+        <p class="text-muted">
+            Launching a product? Expanding your reach? Influencers offer trusted voices, loyal audiences, and authentic storytelling.
+        </p>
+
+        <div class="d-flex justify-content-center flex-wrap gap-3 mb-3">
+            <span class="d-flex align-items-center gap-2">
+                <img src="{% static 'images/icon_search.png' %}" alt="Search Icon" style="width: 20px;">
+                <span>Find creators aligned with your niche</span>
+            </span>
+            <span class="d-flex align-items-center gap-2">
+                <img src="{% static 'images/icon_handshake.png' %}" alt="Handshake Icon" style="width: 20px;">
+                <span>Collaborate easily with tools made for brands</span>
+            </span>
+            <span class="d-flex align-items-center gap-2">
+                <img src="{% static 'images/icon_star.png' %}" alt="Star Icon" style="width: 20px;">
+                <span>Build trust through real connection</span>
+            </span>
+        </div>
+
+        <p class="text-muted small">
+            At Collabry, we connect visionaries with voices. You bring the vision. We bring the influence.
+        </p>
+    </div>
+
+    <div class="row">
+        <!-- Influencers Column -->
+        <div class="col-md-6">
+            <h3 class="brand-color">
+                <img src="{% static 'images/icon_handshake.png' %}" alt="Handshake" style="width: 24px; margin-right: 6px;">
+                Top Content Creators
+            </h3>
+            {% if influencers %}
+                {% for influencer in influencers %}
+                    <div class="card mb-3 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ influencer.handle }}</h5>
+                            <p class="card-text">
+                                <strong>Niche:</strong> {{ influencer.niche }}<br>
+                                <strong>Followers:</strong> {{ influencer.followers }}<br>
+                                <small class="text-muted">{{ influencer.bio }}</small>
+                            </p>
+                        </div>
+                    </div>
+                {% endfor %}
+                <a href="{% url 'influencer-list' %}" class="btn brand-button w-100">See more influencers →</a>
+            {% else %}
+                <p>No influencers found.</p>
+            {% endif %}
+        </div>
+
+        <!-- Brands Column -->
+        <div class="col-md-6">
+            <h3 class="brand-color">
+                <img src="{% static 'images/icon_star.png' %}" alt="Star" style="width: 24px; margin-right: 6px;">
+                Featured Brands
+            </h3>
+            {% if brands %}
+                {% for brand in brands %}
+                    <div class="card mb-3 border-primary shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ brand.company_name }}</h5>
+                            <p class="card-text">{{ brand.bio }}</p>
+                            <a href="{{ brand.website }}" class="btn btn-sm brand-button" target="_blank">Visit</a>
+                        </div>
+                    </div>
+                {% endfor %}
+                <a href="{% url 'brand-list' %}" class="btn brand-button w-100">See more brands →</a>
+            {% else %}
+                <p>No brands found.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- 💎 Premium Content for Influencers -->
+    {% if request.user.is_authenticated and request.user.membership_type == 'influencer' %}
+        <div class="card mt-5 border-info">
+            <div class="card-body">
+                <h5 class="card-title text-info">🎓 Influencer Success Stories</h5>
+                <p class="card-text">Discover how others landed brand deals, grew their audience, and turned content into cash.</p>
+                <a href="#" class="btn brand-button-outline">Read More</a>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- 💌 Newsletter Signup -->
+    <hr class="my-5">
+    <div class="text-center">
+        <h5>
+            <img src="{% static 'images/icon_testimonial.png' %}" alt="Message" style="width: 22px; margin-right: 5px;">
+            Stay in the loop!
+        </h5>
+
+        <p class="text-muted">Subscribe to our newsletter for influencer tips and campaign alerts.</p>
+
+        <form method="post" class="row justify-content-center">
+            {% csrf_token %}
+            <div class="col-md-4">
+                {{ newsletter_form.email }}
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn brand-button w-100">Subscribe</button>
+            </div>
+        </form>
+
+        {% if newsletter_success == True %}
+            <div class="alert alert-success mt-3">Thanks for subscribing!</div>
+        {% elif newsletter_success == False %}
+            <div class="alert alert-danger mt-3">That email is already subscribed or invalid.</div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

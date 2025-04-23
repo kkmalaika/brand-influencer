@@ -1,0 +1,83 @@
+<!-- templates/accounts/register.html -->
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Register | Collabry{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-body p-4">
+
+          <!-- 🐦 Hummingbird Icon -->
+          <div class="text-center mb-3">
+            <img src="{% static 'images/icon_hummingbird.png' %}" alt="Hummingbird Icon" style="width: 40px;">
+          </div>
+
+          <h3 class="text-center mb-4 brand-color">
+            Create Your Collabry Account
+          </h3>
+
+          <form method="post" novalidate>
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+
+            <!-- Username -->
+            <div class="mb-3">
+              {{ form.username.label_tag }}
+              {{ form.username }}
+              {{ form.username.errors }}
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+              {{ form.email.label_tag }}
+              {{ form.email }}
+              {{ form.email.errors }}
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+              {{ form.password1.label_tag }}
+              {{ form.password1 }}
+              {{ form.password1.errors }}
+            </div>
+
+            <!-- Password confirmation -->
+            <div class="mb-3">
+              {{ form.password2.label_tag }}
+              {{ form.password2 }}
+              {{ form.password2.errors }}
+            </div>
+
+            <!-- Membership type radios -->
+            <div class="mb-3">
+              <label class="form-label">{{ form.membership_type.label }}</label>
+              {% for radio in form.membership_type %}
+                <div class="form-check">
+                  {{ radio.tag }}
+                  <label class="form-check-label" for="{{ radio.id_for_label }}">
+                    {{ radio.choice_label }}
+                  </label>
+                </div>
+              {% endfor %}
+              {{ form.membership_type.errors }}
+            </div>
+
+            <button type="submit" class="btn brand-button w-100">
+              Register
+            </button>
+          </form>
+
+          <p class="text-center mt-3">
+            Already have an account?
+            <a href="{% url 'login' %}">Login here</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

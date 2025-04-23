@@ -1,0 +1,68 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Edit Influencer Profile | Collabry{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+
+                    <!-- Logo -->
+                    <img src="{% static 'images/collabry_logo.png' %}" alt="Collabry Logo"
+                         class="mb-3 logo-float" style="width: 120px;">
+
+                    <h4 class="mb-4 brand-color">🎯 Edit Influencer Profile</h4>
+
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <div class="row mb-3 text-start align-items-center">
+                            <label class="col-sm-4 col-form-label text-end">Platform</label>
+                            <div class="col-sm-8">
+                                {{ form.platform }}
+                            </div>
+                        </div>
+
+                        <div class="row mb-3 text-start align-items-center">
+                            <label class="col-sm-4 col-form-label text-end">Handle</label>
+                            <div class="col-sm-8">
+                                {{ form.handle }}
+                            </div>
+                        </div>
+
+                        <div class="row mb-3 text-start align-items-center">
+                            <label class="col-sm-4 col-form-label text-end">Followers</label>
+                            <div class="col-sm-8">
+                                {{ form.followers }}
+                            </div>
+                        </div>
+
+                        <div class="row mb-3 text-start align-items-center">
+                            <label class="col-sm-4 col-form-label text-end">Niche</label>
+                            <div class="col-sm-8">
+                                {{ form.niche }}
+                            </div>
+                        </div>
+
+                        <div class="row mb-4 text-start align-items-center">
+                            <label class="col-sm-4 col-form-label text-end">Bio</label>
+                            <div class="col-sm-8">
+                                {{ form.bio }}
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn brand-button w-50">Save Changes</button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Login | Collabry{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+
+                    <!-- Collabry Logo -->
+                    <img src="{% static 'images/collabry_logo.png' %}" alt="Collabry Logo"
+                         style="width: 140px; height: auto;" class="mb-3 logo-float">
+
+                    <!-- 🔒 Lock Icon Heading -->
+                    <h4 class="card-title mb-4 brand-color">
+                        <img src="{% static 'images/icon_lock.png' %}" alt="Lock Icon"
+                             style="width: 24px; margin-right: 6px;">
+                        Log In to Collabry
+                    </h4>
+
+                    {% if message %}
+                        <div class="alert alert-danger">{{ message }}</div>
+                    {% endif %}
+
+                    <form method="post" class="text-start">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            {{ form.username.label_tag }}
+                            {{ form.username }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.password.label_tag }}
+                            {{ form.password }}
+                        </div>
+
+                        <button type="submit" class="btn brand-button w-100">Log In</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

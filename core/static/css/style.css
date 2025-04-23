@@ -1,0 +1,108 @@
+/* ===== Collabry Branding Palette ===== */
+:root {
+  --collabry-aqua: #007B8A;
+  --collabry-amber: #cc7000;
+  --collabry-amber-dark: #a95d00;
+  --collabry-amber-light: #f5a442;
+
+  --collabry-copper: #7b3414;       /* Deep accent tone */
+  --collabry-copper-dark: #5c230e;  /* Darker hover */
+  --collabry-steelblue: #145b7b;    /* Cool contrast option */
+  --collabry-steelblue-dark: #0d3d56;
+}
+
+/* ===== Brand Color Utility ===== */
+.brand-color {
+  color: var(--collabry-aqua);
+}
+
+/* ===== Buttons ===== */
+.brand-button {
+  background-color: var(--collabry-amber);
+  color: white;
+  border: 2px solid var(--collabry-amber);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+.brand-button:hover {
+  background-color: var(--collabry-amber-dark);
+  border-color: var(--collabry-amber-dark);
+  color: white;
+}
+
+.brand-button-outline {
+  background-color: transparent;
+  color: var(--collabry-amber);
+  border: 2px solid var(--collabry-amber);
+  transition: all 0.3s ease;
+}
+.brand-button-outline:hover {
+  background-color: var(--collabry-amber);
+  color: white;
+}
+
+.brand-button-light {
+  background-color: var(--collabry-amber-light);
+  color: #3a1f00;
+  border: 2px solid var(--collabry-amber-light);
+  transition: background-color 0.3s ease;
+}
+.brand-button-light:hover {
+  background-color: var(--collabry-amber);
+  border-color: var(--collabry-amber);
+  color: white;
+}
+
+/* ✅ Copper Button */
+.brand-button-copper {
+  background-color: var(--collabry-copper);
+  color: white;
+  border: 2px solid var(--collabry-copper);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+.brand-button-copper:hover {
+  background-color: var(--collabry-copper-dark);
+  border-color: var(--collabry-copper-dark);
+  color: white;
+}
+
+/* ✅ Steel Blue Button */
+.brand-button-steel {
+  background-color: var(--collabry-steelblue);
+  color: white;
+  border: 2px solid var(--collabry-steelblue);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+.brand-button-steel:hover {
+  background-color: var(--collabry-steelblue-dark);
+  border-color: var(--collabry-steelblue-dark);
+  color: white;
+}
+
+/* ===== Floating Logo Animation ===== */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-18px); }
+}
+.logo-float {
+  animation: float-slow 4s ease-in-out infinite;
+}
+
+/* ===== Welcome Hero Background ===== */
+.welcome-background {
+  background: radial-gradient(circle at center, rgba(255, 140, 0, 0.1), transparent 70%);
+  padding: 2rem;
+  border-radius: 1rem;
+}
+
+/* ===== Collabry Banner Header ===== */
+.banner-header {
+  background-image: url('/static/images/header_banner.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+
+/* ✅ NEW: Make it thicker */
+  padding-top: 3.5rem;
+  padding-bottom: 3.5rem;
+}

@@ -1,0 +1,67 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Matched Influencers | Collabry{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h2 class="mb-4 brand-color text-center">
+      Matched Influencers
+      {% if industry %}<small class="text-muted">for {{ industry }}</small>{% endif %}
+  </h2>
+
+  <!-- simple filter bar -->
+  <form class="row g-2 justify-content-center mb-4" method="get">
+      <div class="col-auto">
+          <input type="number" name="min_size" class="form-control form-control-sm"
+                 placeholder="Min. audience" value="{{ min_size }}">
+      </div>
+      <div class="col-auto">
+          <input type="number" name="max_size" class="form-control form-control-sm"
+                 placeholder="Max. audience" value="{{ max_size }}">
+      </div>
+      <div class="col-auto">
+          <button type="submit" class="btn brand-button-copper btn-sm">
+              🔍 Filter
+          </button>
+      </div>
+  </form>
+
+  {% if influencers %}
+      <div class="row g-4">
+          {% for inf in influencers %}
+              <div class="col-md-6 col-lg-4">
+                  <div class="card h-100 shadow-sm">
+                      {% if inf.profile_picture %}
+                          <img src="{{ inf.profile_picture.url }}" class="card-img-top"
+                               alt="{{ inf.user.username }} picture">
+                      {% else %}
+                          <img src="{% static 'images/default_avatar.png' %}" class="card-img-top"
+                               alt="default avatar">
+                      {% endif %}
+
+                      <div class="card-body d-flex flex-column">
+                          <h5 class="card-title mb-1">{{ inf.user.username }}</h5>
+                          <p class="card-text small text-muted mb-2">
+                              Niche: {{ inf.niche }}<br>
+                              Audience: {{ inf.followers|intcomma }}
+                          </p>
+
+
+                          <a href="{% url 'influencer-detail' inf.pk %}"
+                             class="mt-auto btn brand-button-steel btn-sm">
+                              View Profile →
+                          </a>
+                      </div>
+                  </div>
+              </div>
+          {% endfor %}
+      </div>
+  {% else %}
+      <div class="alert alert-warning text-center">
+          No influencers match your criteria yet. Try widening the filters!
+      </div>
+  {% endif %}
+</div>
+{% endblock %}

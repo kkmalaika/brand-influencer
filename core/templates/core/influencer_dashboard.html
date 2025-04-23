@@ -1,0 +1,43 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Influencer Dashboard | Collabry{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-4">
+        <img src="{% static 'images/collabry_logo.png' %}" alt="Collabry Logo" class="logo-float" style="width: 120px;">
+        <h2 class="brand-color">
+            <img src="{% static 'images/icon_star.png' %}" alt="Star" style="width: 24px; margin-right: 6px;">
+            Welcome to Your Influencer Dashboard
+        </h2>
+        <p class="text-muted">Here's what you can do as an influencer:</p>
+
+        <!-- ✅ Replaced ✏️ with icon -->
+        <a href="{% url 'edit-influencer-profile' %}" class="btn brand-button-outline mt-3">
+            <img src="{% static 'images/icon_edit_profile.png' %}" alt="Edit" style="width: 20px; margin-right: 6px;">
+            Edit My Profile
+        </a>
+    </div>
+
+    <!-- 🔗 Action Buttons -->
+    <div class="mt-4 d-grid gap-3 col-lg-6 mx-auto">
+
+        <a href="#" class="btn brand-button-copper">
+            <img src="{% static 'images/icon_search.png' %}" alt="Stats Icon" style="width: 20px; margin-right: 6px;" onerror="this.style.display='none'">
+            Track Your Growth
+        </a>
+
+        <a href="#" class="btn brand-button-copper">
+            <img src="{% static 'images/icon_handshake.png' %}" alt="Brands Icon" style="width: 20px; margin-right: 6px;" onerror="this.style.display='none'">
+            Connect with Brands
+        </a>
+
+        <a href="#" class="btn brand-button-copper">
+            <img src="{% static 'images/icon_star.png' %}" alt="Premium Icon" style="width: 20px; margin-right: 6px;" onerror="this.style.display='none'">
+            Unlock Premium Resources
+        </a>
+
+    </div>
+</div>
+{% endblock %}

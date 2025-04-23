@@ -1,0 +1,83 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Submit a Campaign Brief | Collabry{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm">
+        <div class="card-body p-4">
+
+          <!-- Heading with icon -->
+          <h3 class="text-center mb-4 brand-color">
+            <img src="{% static 'images/icon_campaign.png' %}" alt="Campaign" style="width: 24px; margin-right: 8px;">
+            Submit a Campaign Brief
+          </h3>
+
+          {% if submitted %}
+            <div class="alert alert-success text-center">
+              ✅ Your campaign brief has been submitted!
+            </div>
+            <div class="text-center mt-3">
+              <a href="{% url 'campaign-brief-list' %}" class="btn brand-button">
+                📄 View My Campaign Briefs
+              </a>
+            </div>
+          {% else %}
+            <!-- Campaign form -->
+            <form method="post" novalidate>
+              {% csrf_token %}
+              {{ form.non_field_errors }}
+
+              <div class="mb-3">
+                {{ form.title.label_tag }}
+                {{ form.title }}
+                {% if form.title.errors %}
+                  <div class="text-danger small">{{ form.title.errors.0 }}</div>
+                {% endif %}
+              </div>
+
+              <div class="mb-3">
+                {{ form.goals.label_tag }}
+                {{ form.goals }}
+                {% if form.goals.errors %}
+                  <div class="text-danger small">{{ form.goals.errors.0 }}</div>
+                {% endif %}
+              </div>
+
+              <div class="mb-3">
+                {{ form.niche.label_tag }}
+                {{ form.niche }}
+                {% if form.niche.errors %}
+                  <div class="text-danger small">{{ form.niche.errors.0 }}</div>
+                {% endif %}
+              </div>
+
+              <div class="mb-3">
+                {{ form.budget.label_tag }}
+                {{ form.budget }}
+                {% if form.budget.errors %}
+                  <div class="text-danger small">{{ form.budget.errors.0 }}</div>
+                {% endif %}
+              </div>
+
+              <div class="mb-3">
+                {{ form.deadline.label_tag }}
+                {{ form.deadline }}
+                {% if form.deadline.errors %}
+                  <div class="text-danger small">{{ form.deadline.errors.0 }}</div>
+                {% endif %}
+              </div>
+
+              <button type="submit" class="btn brand-button w-100">Submit Brief</button>
+            </form>
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Brand Dashboard | Collabry{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-4">
+        <img src="{% static 'images/collabry_logo.png' %}" alt="Collabry Logo" class="logo-float" style="width: 120px;">
+        <h2 class="brand-color">
+            <img src="{% static 'images/icon_hummingbird.png' %}" alt="Hummingbird" style="width: 24px; margin-right: 6px;">
+            Welcome to Your Brand Dashboard
+        </h2>
+        <p class="text-muted">Manage campaigns, explore influencers, and grow your reach.</p>
+
+        <!-- Updated Edit Profile button with icon -->
+        <a href="{% url 'edit-brand-profile' %}" class="btn brand-button-outline mt-3">
+            <img src="{% static 'images/icon_edit_profile.png' %}" alt="Edit Profile" style="width: 20px; margin-right: 6px;">
+            Edit My Profile
+        </a>
+    </div>
+
+        <!-- 🔗 Action Buttons -->
+    <div class="mt-4 d-grid gap-3 col-lg-6 mx-auto">
+
+        <a href="{% url 'influencer-list' %}" class="btn brand-button">
+            <img src="{% static 'images/icon_search.png' %}" alt="Search" style="width: 20px; margin-right: 6px;">
+            Search for Influencers
+        </a>
+
+        <a href="{% url 'submit-campaign-brief' %}" class="btn brand-button">
+            <img src="{% static 'images/icon_campaign.png' %}" alt="Campaign" style="width: 20px; margin-right: 6px;">
+            Create a Campaign Brief
+        </a>
+
+        <a href="{% url 'campaign-brief-list' %}" class="btn brand-button">
+          <img src="{% static 'images/icon_campaign.png' %}" alt="Briefs" style="width: 20px; margin-right: 6px;">
+          My Campaign Briefs
+        </a>
+
+        <a href="#" class="btn brand-button">
+            <img src="{% static 'images/icon_testimonial.png' %}" alt="Testimonials" style="width: 20px; margin-right: 6px;">
+            View Testimonials <small>(Coming Soon)</small>
+        </a>
+
+    </div>
+
+</div>
+{% endblock %}

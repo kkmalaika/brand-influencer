@@ -1,0 +1,53 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Explore Influencers | Collabry{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="mb-4 brand-color text-center">🤝 Explore Influencers</h1>
+
+    <!-- FILTER FORM -->
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-3">
+            <input type="text" name="niche" value="{{ filters.niche }}" placeholder="Niche" class="form-control">
+        </div>
+        <div class="col-md-3">
+            <input type="text" name="platform" value="{{ filters.platform }}" placeholder="Platform" class="form-control">
+        </div>
+        <div class="col-md-3">
+            <input type="number" name="min_followers" value="{{ filters.min_followers }}" placeholder="Min Followers" class="form-control">
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn brand-button w-100">🔍 Filter</button>
+        </div>
+    </form>
+
+    <!-- RESULTS -->
+    {% if influencers %}
+        <p class="text-muted mb-3">
+            {{ influencers|length }} influencer{{ influencers|length|pluralize }} found.
+        </p>
+
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            {% for influencer in influencers %}
+                <div class="col">
+                    <div class="card h-100 shadow-sm border-info">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ influencer.handle }}</h5>
+                            <p class="card-text">
+                                <strong>Niche:</strong> {{ influencer.niche }}<br>
+                                <strong>Platform:</strong> {{ influencer.platform }}<br>
+                                <strong>Followers:</strong> {{ influencer.followers }}<br>
+                            </p>
+                            <p class="card-text text-muted small">{{ influencer.bio }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted">No influencers found.</p>
+    {% endif %}
+</div>
+{% endblock %}

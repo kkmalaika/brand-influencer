@@ -1,0 +1,70 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Explore Brands | Collabry{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="mb-4 brand-color text-center">💫 Discover Amazing Brands</h1>
+
+    <!-- FILTER FORM -->
+    <form method="get" class="row g-3 mb-4">
+        <!-- Company Name Group -->
+        <div class="col-md-4">
+            <label class="form-label">Company Name (A-Z range)</label>
+            <select name="name_group" class="form-select">
+                <option value="">All</option>
+                <option value="af" {% if filters.name_group == 'af' %}selected{% endif %}>A - F</option>
+                <option value="gl" {% if filters.name_group == 'gl' %}selected{% endif %}>G - L</option>
+                <option value="mr" {% if filters.name_group == 'mr' %}selected{% endif %}>M - R</option>
+                <option value="sz" {% if filters.name_group == 'sz' %}selected{% endif %}>S - Z</option>
+            </select>
+        </div>
+
+        <!-- Industry -->
+        <div class="col-md-4">
+            <label class="form-label">Industry</label>
+            <select name="industry" class="form-select">
+                <option value="">All</option>
+                {% for option in industries %}
+                    <option value="{{ option }}" {% if filters.industry == option %}selected{% endif %}>{{ option }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Country -->
+        <div class="col-md-4">
+            <label class="form-label">Country</label>
+            <select name="country" class="form-select">
+                <option value="">All</option>
+                {% for option in countries %}
+                    <option value="{{ option }}" {% if filters.country == option %}selected{% endif %}>{{ option }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-12">
+            <button type="submit" class="btn brand-button w-100">🔍 Filter</button>
+        </div>
+    </form>
+
+    <!-- RESULTS -->
+    {% if brands %}
+        <p class="text-muted mb-3">{{ brands|length }} brand{{ brands|length|pluralize }} found.</p>
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            {% for brand in brands %}
+                <div class="col">
+                    <div class="card h-100 border-primary shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ brand.company_name }}</h5>
+                            <p class="card-text text-muted">{{ brand.bio }}</p>
+                            <a href="{{ brand.website }}" class="btn btn-sm brand-button-outline" target="_blank">Visit</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted">No brands found.</p>
+    {% endif %}
+</div>
+{% endblock %}

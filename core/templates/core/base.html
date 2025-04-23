@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Collabry{% endblock %}</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body class="bg-light">
+
+<nav class="navbar navbar-expand-lg banner-header border-bottom mb-4 align-items-center">
+    <div class="container d-flex justify-content-between align-items-center">
+
+        <!-- 🔷 Collabry Logo (replacing text) -->
+        <a class="navbar-brand" href="/">
+            <img src="{% static 'images/collabry_logo.png' %}" alt="Collabry Logo"
+     style="height: 250px; margin-left: -50px; position: absolute; top: -50px; z-index: 0;">
+        </a>
+
+        <!-- 🔸 Right-side menu -->
+        <div class="ms-auto d-flex align-items-center gap-2">
+            {% if user.is_authenticated and user.membership_type == 'brand' %}
+                <a href="{% url 'match-influencers' %}" class="btn btn-sm brand-button-copper">
+                    🤝 Matches
+                </a>
+            {% endif %}
+
+            {% if user.is_authenticated %}
+                <div class="dropdown">
+                    <button class="btn btn-sm brand-button-outline dropdown-toggle"
+                            type="button" id="userMenu" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                        👋 {{ user.username }}
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                        {% if user.membership_type == 'brand' %}
+                            <li>
+                                <a class="dropdown-item" href="{% url 'brand-dashboard' %}">
+                                    <img src="{% static 'images/icon_myhome.png' %}" alt="Home" style="width: 18px; margin-right: 6px;">
+                                    My Home
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'edit-brand-profile' %}">
+                                    <img src="{% static 'images/icon_edit_profile.png' %}" alt="Edit" style="width: 18px; margin-right: 6px;">
+                                    Edit Profile
+                                </a>
+                            </li>
+                        {% elif user.membership_type == 'influencer' %}
+                            <li>
+                                <a class="dropdown-item" href="{% url 'influencer-dashboard' %}">
+                                    <img src="{% static 'images/icon_myhome.png' %}" alt="Home" style="width: 18px; margin-right: 6px;">
+                                    My Home
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'edit-influencer-profile' %}">
+                                    <img src="{% static 'images/icon_edit_profile.png' %}" alt="Edit" style="width: 18px; margin-right: 6px;">
+                                    Edit Profile
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <img src="{% static 'images/icon_lock.png' %}" alt="Lock" style="width: 18px; margin-right: 6px;">
+                                Change Password
+                            </a>
+                        </li>
+
+                        <li><hr class="dropdown-divider"></li>
+
+                        <li>
+                            <a class="dropdown-item text-danger" href="{% url 'logout' %}">
+                                🚪 Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn btn-sm brand-button-outline">Login</a>
+                <a href="{% url 'register' %}" class="btn btn-sm brand-button">Register</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    {% block content %}{% endblock %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

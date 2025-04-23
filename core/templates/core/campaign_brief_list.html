@@ -1,0 +1,48 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}My Campaign Briefs | Collabry{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+  <h2 class="brand-color text-center mb-4">
+    <img src="{% static 'images/icon_campaign.png' %}" alt="Campaign" style="width: 24px; margin-right: 6px;">
+    My Campaign Briefs
+  </h2>
+
+  {% if just_submitted %}
+    <div class="alert alert-success text-center">
+      ✅ Your campaign brief has been submitted successfully!
+    </div>
+  {% endif %}
+
+  {% if briefs %}
+    <div class="table-responsive">
+      <table class="table table-hover mt-4">
+        <thead class="table-light">
+          <tr>
+            <th>Title</th>
+            <th>Niche</th>
+            <th>Budget</th>
+            <th>Deadline</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for brief in briefs %}
+            <tr>
+              <td>{{ brief.title }}</td>
+              <td>{{ brief.niche }}</td>
+              <td>${{ brief.budget|floatformat:0 }}</td>
+              <td>{{ brief.deadline }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p class="text-muted text-center">You haven’t submitted any briefs yet.</p>
+  {% endif %}
+
+</div>
+{% endblock %}
