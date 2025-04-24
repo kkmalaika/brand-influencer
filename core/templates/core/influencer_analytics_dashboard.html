@@ -1,0 +1,93 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}My Analytics | Collabry{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="text-center mb-4">
+    <img src="{% static 'images/icon_star.png' %}" alt="Analytics" style="width: 32px; margin-bottom: 8px;">
+    <h2 class="brand-color">📊 My TikTok Performance</h2>
+    <p class="text-muted">Track how your TikTok presence evolves over time</p>
+  </div>
+
+  {% if latest %}
+    <div class="row justify-content-center text-center mb-4">
+      <div class="col-md-3">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h5>Followers</h5>
+            <p class="fs-4 fw-bold text-success">{{ latest.followers|intcomma }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h5>Total Likes</h5>
+            <p class="fs-4 fw-bold text-warning">{{ latest.likes|intcomma }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h5>Videos</h5>
+            <p class="fs-4 fw-bold text-primary">{{ latest.videos }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-5">
+      <h4 class="brand-color mb-3">📈 Stats Over Time</h4>
+      <canvas id="growthChart" height="100"></canvas>
+    </div>
+  {% else %}
+    <div class="alert alert-info text-center">
+      No TikTok stats found. Please ensure your handle is valid and data has been collected.
+    </div>
+  {% endif %}
+</div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+{% if chart_labels and chart_followers %}
+<script>
+  const ctx = document.getElementById('growthChart').getContext('2d');
+  const chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: {{ chart_labels|safe }},
+      datasets: [{
+        label: 'Followers',
+        data: {{ chart_followers|safe }},
+        borderColor: '#007B8A',
+        fill: false,
+        tension: 0.3
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'Date'
+          }
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'Followers'
+          },
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+{% endif %}
+{% endblock %}

@@ -19,5 +19,7 @@ urlpatterns = [
     ),
     path('campaign/submit/', submit_campaign_brief, name='submit-campaign-brief'),
     path('campaign/list/', views.campaign_brief_list, name='campaign-brief-list'),
+    path("dashboard/analytics/", views.influencer_analytics_dashboard, name="influencer-analytics"),
+
 ]
 

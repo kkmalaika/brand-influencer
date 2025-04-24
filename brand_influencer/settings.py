@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     "core.apps.CoreConfig",
     "django_countries",
     "django.contrib.humanize",
+    'django_apscheduler',
 ]
 
 
