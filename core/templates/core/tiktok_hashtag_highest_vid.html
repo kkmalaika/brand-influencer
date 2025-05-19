@@ -1,0 +1,71 @@
+{% extends 'core/base.html' %}
+{% load static humanize %}
+
+{% block title %}TikTok Hashtag Insights{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="text-center mb-4">
+    <img src="{% static 'images/icon_tiktok.png' %}" alt="TikTok Hashtag Icon" style="width: 40px; margin-bottom: 10px;">
+    <h2 class="brand-color">🔍 Trending by Hashtag</h2>
+    <p class="text-muted">
+      Find which TikTok influencer created the most viewed content for your preferred hashtags.
+    </p>
+  </div>
+
+  <form method="post" class="text-center mb-4">
+    {% csrf_token %}
+    <input type="text" name="hashtag" placeholder="e.g. makeup" value="{{ hashtag }}" class="form-control w-50 mx-auto mb-3">
+    <button type="submit" class="btn brand-button">Search</button>
+  </form>
+
+  {% if results %}
+  <form method="post" action="{% url 'add_to_watchlist' %}">
+    {% csrf_token %}
+    <input type="hidden" name="hashtag" value="{{ hashtag }}">
+
+    <h4 class="text-center">Top 5 Influencers for <strong>#{{ hashtag }}</strong></h4>
+
+    <table class="table table-bordered mt-3">
+      <thead>
+        <tr>
+          <th>Select</th>
+          <th>Influencer</th>
+          <th>Profile</th>
+          <th>Followers</th>
+          <th>Video Title</th>
+          <th>Views</th>
+          <th>Likes</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in results %}
+        <tr>
+          <td>
+            <input type="checkbox" name="usernames" value="{{ item.authorUsername|lower }}">
+            <input type="hidden" name="followers_{{ item.authorUsername|lower }}" value="{{ item.authorMeta.fans }}">
+          </td>
+          <td>{{ item.authorUsername }}</td>
+          <td>
+            <a href="{{ item.profile_url }}" target="_blank">🔗 View</a>
+          </td>
+          <td>{{ item.authorMeta.fans|intcomma }}</td>
+          <td>{{ item.text|truncatechars:100 }}</td>
+          <td>{{ item.playCount|intcomma }}</td>
+          <td>{{ item.diggCount|intcomma }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="text-center mt-3">
+      <button type="submit" class="btn btn-primary">➕ Add Selected to Watchlist</button>
+    </div>
+  </form>
+  {% elif hashtag %}
+    <div class="alert alert-warning text-center mt-4">
+      No results found for <strong>#{{ hashtag }}</strong>. Please try another hashtag.
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

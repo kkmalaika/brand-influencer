@@ -1,0 +1,52 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}All Hashtag Searches | Collabry{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="text-center mb-4">
+    <h2 class="brand-color">
+      All My Hashtag Searches
+    </h2>
+    <p class="text-muted">Here are all your TikTok hashtag searches so far. You can also run a new one below.</p>
+
+    <!-- ✅ New search form -->
+    <form method="post" action="{% url 'scrape_tiktok' %}" class="d-flex justify-content-center mt-4">
+      {% csrf_token %}
+      <input type="text" name="hashtag" placeholder="Enter a new hashtag" class="form-control w-25 me-2">
+      <button type="submit" class="btn brand-button">Search</button>
+    </form>
+  </div>
+
+  {% if all_searches %}
+    <table class="table table-striped text-center mt-4">
+      <thead>
+        <tr>
+          <th># Hashtag</th>
+          <th>Date</th>
+          <th>Top Views</th>
+          <th>Top Likes</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for search in all_searches %}
+        <tr>
+          <td>
+            <a href="{% url 'hashtag_search_detail' search.id %}" class="text-decoration-none">
+              #{{ search.hashtag }}
+            </a>
+          </td>
+          <td>{{ search.date_searched|date:"M d, Y" }}</td>
+          <td>{{ search.top_views|intcomma }}</td>
+          <td>{{ search.top_likes|intcomma }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="alert alert-info text-center mt-4">No hashtag searches found.</div>
+  {% endif %}
+</div>
+{% endblock %}

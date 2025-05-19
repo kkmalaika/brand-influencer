@@ -6,18 +6,14 @@ from .models import InfluencerProfile, TikTokStat
 
 logger = logging.getLogger(__name__)
 
-# 🧁 TikTok cookies from your browser
+# --- TikTok cookies from your real browser (✅ Already good)
 cookies = [
-    {"name": "msToken", "value": "your_msToken_here", "domain": ".tiktok.com", "path": "/"},
-    {"name": "sessionid", "value": "your_sessionid_here", "domain": ".tiktok.com", "path": "/"},
+    {"name": "msToken", "value": "2kJpXih_mIrJlQ9bcgGZHYkRDfWNXwUAW83ihCCY-OnJ6luBA5nmRsIaFzRvkBP_RTohRl1NXliWHq3qSEaaH7pcB2a9INK2M0RNV2Xo7KMED_ztGlz64zoWZ4bl00Q0wMB0VCLLFBDKq67ci9RkL0Ylow==", "domain": ".tiktok.com", "path": "/"},
+    {"name": "sessionid", "value": "873edd8459b7eb2856d11bb2b18a67d5", "domain": ".tiktok.com", "path": "/"},
 ]
 
-# 🛠️ Playwright proxy config — only here!
-context_options = {
-    "proxy": {
-        "server": "http://51.159.98.163:8089"
-    }
-}
+# 🧹 REMOVE proxy conflict: we pass NO proxy here now
+context_options = {}  # 👈 empty dict = no proxy confusion
 
 # --- One-off fetch for a single influencer
 async def get_tiktok_user_stats(username):
@@ -25,37 +21,43 @@ async def get_tiktok_user_stats(username):
         api = TikTokApi()
         await api.create_sessions(
             num_sessions=1,
-            headless=False,
-            browser='chromium',
+            headless=False,         # 👈 Disable headless mode
+            browser='webkit',       # 👈 Use webkit (more human-like)
             cookies=cookies,
             context_options=context_options
         )
 
         user = api.user(username)
         data = await user.info()
-        await api.close_sessions()
+        if not data or "userInfo" not in data:
+            logger.warning(f"No userInfo returned for @{username}")
+            await api.close_sessions()
+            return None
 
         stats = data["userInfo"]["stats"]
+        await api.close_sessions()
+
+        # Update influencer profile
         try:
             influencer = await sync_to_async(InfluencerProfile.objects.get)(handle=username)
             influencer.followers = stats["followerCount"]
             await sync_to_async(influencer.save)(update_fields=["followers"])
         except InfluencerProfile.DoesNotExist:
-            logger.warning(f"Influencer @{username} not found — profile not updated.")
+            logger.warning(f"Influencer @{username} not found — skipping DB update.")
 
         return {
             "username": username,
             "followers": stats["followerCount"],
             "likes": stats["heartCount"],
             "videos": stats["videoCount"],
-            "following": stats["followingCount"]
+            "following": stats["followingCount"],
         }
 
     except Exception as e:
         logger.error(f"Error fetching TikTok data for @{username}: {e}")
         return None
 
-# --- Fetch for all TikTok influencers in the DB
+# --- Fetch for all TikTok influencers in DB
 async def fetch_all_tiktok_stats():
     try:
         influencers = await sync_to_async(list)(
@@ -65,8 +67,8 @@ async def fetch_all_tiktok_stats():
         api = TikTokApi()
         await api.create_sessions(
             num_sessions=1,
-            headless=False,
-            browser='chromium',
+            headless=False,  # 👈 Disable headless mode
+            browser='webkit',  # 👈 Use webkit (more human-like)
             cookies=cookies,
             context_options=context_options
         )
@@ -97,37 +99,3 @@ async def fetch_all_tiktok_stats():
 
     except Exception as e:
         logger.error(f"❌ Global fetch error: {e}")
-
-# --- Search top TikTok video for a hashtag
-async def fetch_top_influencer_from_hashtag(hashtag):
-    try:
-        api = TikTokApi()
-        await api.create_sessions(
-            num_sessions=1,
-            headless=False,
-            browser='webkit',
-            cookies=cookies,
-            context_options=context_options
-        )
-
-        import asyncio
-        await asyncio.sleep(3)
-
-        tag = api.hashtag(name=hashtag)
-        videos = [video async for video in tag.videos(count=1)]
-        await api.close_sessions()
-
-        if not videos:
-            logger.warning(f"No videos found for hashtag #{hashtag}")
-            return None
-
-        top_video = videos[0]
-        user = top_video.author
-        username = user.username
-
-        await get_tiktok_user_stats(username)
-        return {"username": username}
-
-    except Exception as e:
-        logger.error(f"Error during hashtag search for #{hashtag}: {e}")
-        return None

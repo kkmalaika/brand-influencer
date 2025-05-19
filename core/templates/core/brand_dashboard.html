@@ -13,14 +13,13 @@
         </h2>
         <p class="text-muted">Manage campaigns, explore influencers, and grow your reach.</p>
 
-        <!-- Updated Edit Profile button with icon -->
         <a href="{% url 'edit-brand-profile' %}" class="btn brand-button-outline mt-3">
             <img src="{% static 'images/icon_edit_profile.png' %}" alt="Edit Profile" style="width: 20px; margin-right: 6px;">
             Edit My Profile
         </a>
     </div>
 
-        <!-- 🔗 Action Buttons -->
+    <!-- 🔗 Action Buttons -->
     <div class="mt-4 d-grid gap-3 col-lg-6 mx-auto">
 
         <a href="{% url 'influencer-list' %}" class="btn brand-button">
@@ -43,7 +42,38 @@
             View Testimonials <small>(Coming Soon)</small>
         </a>
 
+        <!-- ✅ New Button for Trending by Hashtags -->
+        <a href="{% url 'scrape_tiktok' %}" class="btn brand-button">
+            <img src="{% static 'images/icon_trending.png' %}" alt="Trending" style="width: 20px; margin-right: 6px;">
+            Trending by Hashtags
+        </a>
     </div>
+
+   {% if recent_searches %}
+<div class="mt-5">
+    <h4 class="brand-color text-center">
+        <img src="{% static 'images/icon_tiktok.png' %}" alt="TikTok Icon" style="width: 24px; margin-bottom: 4px;">
+        Recent Hashtag Searches
+    </h4>
+    <ul class="list-group list-group-flush mt-3">
+        {% for search in recent_searches %}
+            <li class="list-group-item text-center">
+                #{{ search.hashtag }} — {{ search.date_searched|date:"M d, Y" }}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <div class="text-center mt-3">
+        <a href="{% url 'hashtag_search_history' %}" class="btn btn-outline-primary">
+            🔎 See all my searched hashtags
+        </a>
+    </div>
+    <a href="{% url 'brand_watchlist' %}" class="btn btn-outline-primary mt-3">
+      ⭐ View My Watchlist
+    </a>
+
+</div>
+{% endif %}
 
 </div>
 {% endblock %}
